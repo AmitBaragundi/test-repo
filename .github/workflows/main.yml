@@ -13,20 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - run: test creds
-        env:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: mr-smithers-excellent/docker-buildpush@v4
         with:
-          context: .         # root, since Dockerfile is here
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-app:latest
+          image: amitbaragundi/my-app:latest
+          registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
